@@ -1,0 +1,18 @@
+[project]
+name = "py-gsFeedPut"
+version = "0.0.1"
+authors = [
+  { name="Coburn Wightman", email="coburnw@halfstop.top" },
+]
+description = "A Grovestreams feed-put library in Python"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "Private :: Do Not Upload",
+]
+license = {text = "Apache-2.0"}
+
+[project.urls]
+Homepage = "https://github.com/coburnw/py-gsFeedPut"

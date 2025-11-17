@@ -1,0 +1,7 @@
+# python stuff
+*.pyc
+*.egg-info
+
+# emacs stuff
+*~
+
