@@ -1,6 +1,7 @@
  
-# derived from GroveStreams.com Python 3.2 Feed Example
 # Copyright 2025 Coburn Wightman
+# derived from GroveStreams.com Python 3.2 Feed Example
+#
 # Copyright 2014 GroveStreams LLC.
 # Licensed under the Apache License, Version 2.0 (the "License");
 #  you may not use this file except in compliance with the License.
@@ -35,6 +36,8 @@ class Stream:
         self.description = 'No Description'
         self.value_type = value_type.upper()
         self.units_id = 'noSymbol'
+
+        self.initialized = False
         
         return
 
@@ -64,24 +67,20 @@ class Stream:
     def update(self):
         raise NotImplemented
 
-    # def rollup(self):
-    #     result = self.values[-1]
-    #     self.clear()
-    #     self.values.append(result)
-
-    #     return
-
     def serialize(self, comp_id, initialize=False):
-        serialized = dict()
-
-        if initialize:
-            serialized['defaults'] = self.get_defaults()
+        serialized = None
+        
+        if len(self.values) > 0:
+            serialized = dict()
+            if not self.initialized:
+                self.initialized = True
+                serialized['defaults'] = self.get_defaults()
             
-        if comp_id:
-            serialized['compId'] = comp_id
+            if comp_id:
+                serialized['compId'] = comp_id
             
-        serialized['streamId'] = self.stream_id
-        serialized['data'] = self.values 
+            serialized['streamId'] = self.stream_id
+            serialized['data'] = self.values 
         
         return serialized
 
@@ -121,19 +120,6 @@ class RandomStream(Stream):
         
         return defaults
 
-    # def rollup(self):
-    #     if self.value_type == 'STRING':
-    #         raise TypeError('cant rollup a string')
-        
-    #     result = 0
-    #     sample_count = len(self.values)
-    #     for value in self.values:
-    #         result += value / sample_count
-
-    #     self.clear()
-    #     self.values.append(result)
-
-    #     return
         
 class Streams():
     def __init__(self, comp_id):
@@ -160,17 +146,13 @@ class Streams():
 
         return
             
-    # def rollup(self):
-    #     for key, stream in self.streams.items():
-    #         stream.rollup()
-
-    #     return
-            
     def serialize(self, initialize=False):
         serialized = []
         
         for key, stream in self.streams.items():
-            serialized.append(stream.serialize(self.comp_id, initialize))
+            data = stream.serialize(self.comp_id, initialize)
+            if data:
+                serialized.append(data)
 
         return serialized
             
