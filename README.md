@@ -9,8 +9,9 @@ as the password in the project_id stanza:
 
 ```
 # ~/.netrc
-machine simple
+machine mud9
 login none
 account none
 password ******
 ```
+<img width="620" height="540" alt="api-key-setup" src="https://github.com/user-attachments/assets/6a5a2b0b-c1a9-4357-ae8c-8cfd9d4caf64" />
