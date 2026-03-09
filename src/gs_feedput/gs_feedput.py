@@ -250,8 +250,9 @@ class Components():
         return serialized
 
 class Feed:
-    def __init__(self, project_id, compress=False):
+    def __init__(self, project_id, compress=False, debug=False):
         self.compress = compress
+        self.debug = debug
 
         try:
             rc = netrc.netrc()
@@ -288,15 +289,17 @@ class Feed:
         body['feed'] = feed
         body = self._encode(body, headers)
         
-        original_size = len(body)
-        # print(headers) # exposes api_key
-        print(body)
+        if self.debug:
+            # print(headers) # exposes api_key
+            print(body)
 
+        original_size = len(body)
         if self.compress:
             body = self._compress(body, headers)
 
         compression = (original_size - len(body)) / original_size
-        print('upload size of {} bytes with {}% compression'.format(len(body), round(compression*100)))
+        if self.debug:
+            print('upload size of {} bytes with {}% compression'.format(len(body), round(compression*100)))
               
         self.initialized = self._put(body, headers)
         
